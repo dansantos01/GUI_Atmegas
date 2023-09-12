@@ -1,0 +1,144 @@
+#:import Factory kivy.factory.Factory
+
+WindowManager:
+    MainWindow:
+    TestWindow:
+    SecondWindow:
+
+<Label1@Label>:
+    # font_name: "Arial"
+    font_size: 45
+
+
+<MainWindow>:
+    name: "main"
+    # Background color
+    canvas.before:
+        Color:
+            # rgba: 147/255, 132/255, 156/255, 1
+            rgba: 0,0,0,1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: "vertical"
+        BoxLayout:
+            size_hint_y: .25
+            canvas.before:
+                Color:
+                    rgba: 101/255, 95/255, 110/255, 1
+                Line:
+                    width: 3
+                    points: self.x, self.y - 10, self.x + self.width, self.y - 10
+            Label1:
+                text: "Main Menu"
+                color: 1, 1, 1, 1
+                bold: "true"
+
+
+        GridLayout:
+            cols: 3
+            padding: "10dp", "60dp"
+            spacing: "5dp"
+            Button:
+                text: "Create New file"
+                on_release:
+                    Factory.FileCreationPopup().open()
+
+            Button:
+                text: "Edit Existing File"
+                on_release:
+                    Factory.FileCreationPopup().open()
+                disabled: True
+            Button:
+                text: "Exit"
+                on_release: app.stop()
+
+
+<TestTabs>
+    do_default_tab: False
+
+<TestWindow@TabbedPanel>:
+    name: "test"
+    id: "test_tp"
+    BoxLayout:
+        orientation: "vertical"
+        TestTabs:
+        GridLayout:
+            cols: 3
+            size_hint: 1, 0.05
+            Button:
+                text: "Back"
+                font_size: 14
+                size_hint: None, 1
+                width: "60dp"
+                pos_hint: {"x": 0, "y": 0}
+                on_release:
+                    app.root.current = "main"
+                    root.manager.transition.direction = "right"
+
+            Label:
+
+            Button:
+                text: "Generate File"
+                font_size: 14
+                size_hint: None, 1
+                width: "150dp"
+                pos_hint: {"right": 0, "y": 0}
+                on_release:
+                    root.get_data()
+
+
+
+
+<FileCreationPopup>
+    auto_dismiss: True
+    title: "Insert file path here"
+
+    size_hint: 0.4, 0.5
+    pos_hint: {"right": 0.7, "top": 0.8}
+
+    BoxLayout:
+        orientation: "vertical"
+        spacing: "5dp"
+        GridLayout:
+            cols: 2
+            Label:
+                text: "Path: "
+            TextInput:
+                id: path_to_directory
+                multiline: False
+        Button:
+            text: "OK"
+            font_size: 24
+            size_hint: 1, 0.5
+            on_release:
+                root.on_release_button(path_to_directory.text)
+                root.dismiss()
+                root.set_screen()
+
+<FileEditPopup>:
+    auto_dismiss: True
+    title: "CONFIG FILE CREATION"
+
+    size_hint: 0.4, 0.5
+    pos_hint: {"right": 0.7, "top": 0.8}
+
+    BoxLayout:
+        orientation: "vertical"
+        spacing: "5dp"
+        GridLayout:
+            cols: 2
+            Label:
+                text: "Path to directory: "
+            TextInput:
+                id: path
+                multiline: False
+        Button:
+            text: "OK"
+            font_size: 24
+            size_hint: 1, 0.5
+            on_release:
+                root.on_release_button(path.text)
+                root.dismiss()
+                root.set_screen()
