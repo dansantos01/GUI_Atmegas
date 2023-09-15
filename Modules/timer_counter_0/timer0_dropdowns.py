@@ -1,44 +1,51 @@
 from kivy.uix.spinner import Spinner
+from functions import *
 
 ### SELECTION INFO
 
 TIMER0_WGM = {
-    0: "Normal",
-    1: "PWM, Phase Correct (TOP on 0xFF)",
-    2: "CTC",
-    3: "Fast PWM (TOP on 0xFF)",
-    5: "PWM, Phase Correct (TOP on OCRA)",
-    7: "Fast PWM (TOP on OCRA)"
+    "normal": "Normal / CTC",
+    "pwm": "PWM, Phase Correct",
+    "fastpwm": "Fast PWM",
 }
 
-COM0_nPWM = {
+TIMER0_WGM_NORMAL = {
+    0: "Normal",
+    2: "CTC"
+}
+
+TIMER0_WGM_PWM = {
+    1: "TOP on 0xFF",
+    5: "TOP on OCRA"
+}
+
+TIMER0_WGM_FASTPWM = {
+    3: "TOP on 0xFF",
+    7: "TOP on OCRA"
+}
+
+TIMER0_COM_NORMAL = {
     0: "Normal port operation, OC0A disconnected.",
     1: "Toggle OC0A on Compare Match",
     2: "Clear OC0A on Compare Match",
     3: "Set OC0A on Compare Match"
 }
 
-COM0_fPWM = {
+TIMER0_COM_FASTPWM = {
     0: "Normal port operation, OC0A disconnected.",
     1: "Toggle OC0A on Compare Match",
     2: "Clear OC0A on Compare Match, set OC0A at BOTTOM, (non-inverting mode).",
     3: "Set OC0A on Compare Match, clear OC0A at BOTTOM, (inverting mode)."
 }
 
-COM0_phPWM = {
+TIMER0_COM_PWM = {
     0: "Normal port operation, OC0A disconnected.",
     1: "Toggle OC0A on Compare Match",
     2: "Clear OC0A on Compare Match when up-counting. Set OC0A on Compare Match when down-counting.",
     3: "Set OC0A on Compare Match when up-counting. Clear OC0A on Compare Match when down-counting."
 }
 
-COM0_menu = {
-    0: COM0_nPWM,
-    1: COM0_fPWM,
-    2: COM0_phPWM
-}
-
-CLK0_sel = {
+TIMER0_CLOCK = {
     0: "No clock (TIMER stopped)",
     1: "No prescaling",
     2: "clk / 8",
@@ -49,49 +56,27 @@ CLK0_sel = {
     7: "External clock source on T0 pin. Clock on rising edge"
 }
 
-
-def create_spinner():
-    spn = Spinner(
-        text="Choose Mode of Operation",
-        text_autoupdate=True,
-        values=(TIMER0_WGM[0], TIMER0_WGM[1], TIMER0_WGM[2], TIMER0_WGM[3]),
-        size_hint=(0.5, 0.2),
-        pos_hint={"center_x": .5, "center_y": .5}
-    )
-    return spn
+spn_TIMER0_WGM = create_spinner(TIMER0_WGM)
+spn_TIMER0_WGM_OPT = create_spinner(TIMER0_WGM_NORMAL)
+spn_TIMER0_COM_A = create_spinner(TIMER0_COM_NORMAL)
+spn_TIMER0_COM_B = create_spinner(TIMER0_COM_NORMAL)
+spn_TIMER0_CLOCK = create_spinner(TIMER0_CLOCK)
 
 
-def upd_spinner():
-    spn = Spinner(
-        text="Choose Mode of Operation",
-        text_autoupdate=True,
-        values=(TIMER0_WGM[0], TIMER0_WGM[1], TIMER0_WGM[2], TIMER0_WGM[3], TIMER0_WGM[3], TIMER0_WGM[7]),
-        size_hint=(0.5, 0.2),
-        pos_hint={"center_x": .5, "center_y": .5}
-    )
-    return spn
+def wgm_spinner_update(obj, text):
+    if TIMER0_WGM["normal"] == spn_TIMER0_WGM.text:
+        spn_values_update(spn_TIMER0_COM_A, TIMER0_COM_NORMAL)
+        spn_values_update(spn_TIMER0_COM_B, TIMER0_COM_NORMAL)
+        spn_values_update(spn_TIMER0_WGM_OPT, TIMER0_WGM_NORMAL)
+    elif TIMER0_WGM["pwm"] == spn_TIMER0_WGM.text:
+        spn_values_update(spn_TIMER0_COM_A, TIMER0_COM_PWM)
+        spn_values_update(spn_TIMER0_COM_B, TIMER0_COM_PWM)
+        spn_values_update(spn_TIMER0_WGM_OPT, TIMER0_WGM_PWM)
+    elif TIMER0_WGM["fastpwm"] == spn_TIMER0_WGM.text:
+        spn_values_update(spn_TIMER0_COM_A, TIMER0_COM_FASTPWM)
+        spn_values_update(spn_TIMER0_COM_B, TIMER0_COM_FASTPWM)
+        spn_values_update(spn_TIMER0_WGM_OPT, TIMER0_WGM_FASTPWM)
 
 
-WGM_spn = create_spinner()
+spn_TIMER0_WGM.bind(text=wgm_spinner_update)
 
-
-
-COM0A_spn = Spinner(
-    text="Choose Mode of Operation",
-    text_autoupdate=True,
-    values=(COM0_menu[1][0], COM0_menu[1][1], COM0_menu[1][2], COM0_menu[1][3]),
-    size_hint=(0.5, 0.2),
-    pos_hint={"center_x": .5, "center_y": .5}
-)
-COM0B_spn = Spinner(
-    text="Choose Mode of Operation",
-    text_autoupdate=True,
-    values=(COM0_menu[1][0], COM0_menu[1][1], COM0_menu[1][2], COM0_menu[1][3]),
-    size_hint=(0.5, 0.2),
-    pos_hint={"center_x": .5, "center_y": .5}
-)
-PRE0_spn = Spinner(
-    text="Choose Prescaler",
-    text_autoupdate=True,
-    values=(CLK0_sel[0], CLK0_sel[1], CLK0_sel[2], CLK0_sel[3], CLK0_sel[4], CLK0_sel[5], CLK0_sel[6], CLK0_sel[7])
-)

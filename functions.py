@@ -36,12 +36,25 @@ def create_label(location, text):
     location.add_widget(Label(text=text, size_hint_x=.3))
 
 
-def create_spinner_ui(description, values_vect, vect_size, location):
+def create_spinner_ui(description, spinner, location):
     location.add_widget(Label(text=description, size_hint_x=.3))
+    location.add_widget(spinner)
 
 
 def spn_values_update(spn, values_vect):
     spn.values = values_vect.values()
+
+
+def create_spinner(values_dict):
+    spn = Spinner(
+        text="Empty",
+        text_autoupdate=True,
+        values="Empty",
+        size_hint=(0.5, 0.2),
+        pos_hint={"center_x": .5, "center_y": .5}
+    )
+    spn.values = values_dict.values()
+    return spn
 
 
 

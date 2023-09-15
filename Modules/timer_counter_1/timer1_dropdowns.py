@@ -1,5 +1,5 @@
 from kivy.uix.spinner import Spinner
-from kivy.properties import ListProperty
+from functions import *
 
 
 TIMER1_WGM = {
