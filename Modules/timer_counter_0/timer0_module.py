@@ -44,15 +44,11 @@ def timer0_is_open():
 def timer0_tab_start(self, btn):
     timer0_t = TabbedPanelItem(text="TIMER0")
     grid = GridLayout(cols=2)
-    create_label(grid, "Mode of Operation")
-    WGM_spn.bind(text=update_spinner)
-    grid.add_widget(WGM_spn)
-    create_label(grid, "Compare Output Mode A")
-    grid.add_widget(COM0A_spn)
-    create_label(grid, "Compare Output Mode B")
-    grid.add_widget(COM0B_spn)
-    create_label(grid, "Prescaler")
-    grid.add_widget(PRE0_spn)
+    create_spinner_ui("Wave Generation Mode", spn_TIMER0_WGM, grid)
+    create_spinner_ui("Wave Generation Mode Options", spn_TIMER0_WGM_OPT, grid)
+    create_spinner_ui("Compare Output Mode A", spn_TIMER0_COM_A, grid)
+    create_spinner_ui("Compare Output Mode B", spn_TIMER0_COM_B, grid)
+    create_spinner_ui("Clock", spn_TIMER0_CLOCK, grid)
     create_label(grid, "Timer/Counter Output Compare Match A Interrupt Enable")
     switch = Switch()
     switch.bind(active=int_cma_callback)
@@ -65,8 +61,6 @@ def timer0_tab_start(self, btn):
     switch2 = Switch()
     switch2.bind(active=int_ovf_callback)
     grid.add_widget(switch2)
-    print(TIMER0_WGM.keys())
-    spn_values_update(WGM_spn, TIMER0_WGM)
 
     # Put Content in Tab and add Tab to be available
     timer0_t.content = grid
@@ -88,18 +82,6 @@ def int_cmb_callback(instance, value):
 def int_ovf_callback(instance, value):
     global toie0
     toie0 = value
-
-
-def update_spinner(obj, text):
-    if TIMER0_WGM[1] == text or TIMER0_WGM[5] == text:
-        COM0A_spn.values = [COM0_menu[2][0], COM0_menu[2][1], COM0_menu[2][2], COM0_menu[2][3]]
-        COM0B_spn.values = [COM0_menu[2][0], COM0_menu[2][1], COM0_menu[2][2], COM0_menu[2][3]]
-    elif TIMER0_WGM[3] == text or TIMER0_WGM[7] == text:
-        COM0A_spn.values = [COM0_menu[1][0], COM0_menu[1][1], COM0_menu[1][2], COM0_menu[1][3]]
-        COM0B_spn.values = [COM0_menu[1][0], COM0_menu[1][1], COM0_menu[1][2], COM0_menu[1][3]]
-    else:
-        COM0A_spn.values = [COM0_menu[0][0], COM0_menu[0][1], COM0_menu[0][2], COM0_menu[0][3]]
-        COM0B_spn.values = [COM0_menu[0][0], COM0_menu[0][1], COM0_menu[0][2], COM0_menu[0][3]]
 
 
 def clk0_bit(value):
@@ -178,19 +160,20 @@ def timer0_int_bits():
 
 
 def get_timer0():
-    clk0_bit(get_value(CLK0_sel, PRE0_spn.text))
-    wgm = get_value(TIMER0_WGM, WGM_spn.text)
-    wgm0_bit(wgm)
+    clk0_bit(get_value(TIMER0_CLOCK, spn_TIMER0_CLOCK.text))
 
-    if wgm == 3 or wgm == 7:
-        com0a_bit(get_value(COM0_fPWM, COM0A_spn.text))
-        com0b_bit(get_value(COM0_fPWM, COM0B_spn.text))
-    elif wgm == 1 or wgm == 5:
-        com0a_bit(get_value(COM0_phPWM, COM0A_spn.text))
-        com0b_bit(get_value(COM0_phPWM, COM0B_spn.text))
-    else:
-        com0a_bit(get_value(COM0_nPWM, COM0A_spn.text))
-        com0b_bit(get_value(COM0_nPWM, COM0B_spn.text))
+    if TIMER0_WGM["normal"] == spn_TIMER0_WGM.text:
+        com0a_bit(get_value(TIMER0_COM_NORMAL, spn_TIMER0_COM_A.text))
+        com0b_bit(get_value(TIMER0_COM_NORMAL, spn_TIMER0_COM_B.text))
+        wgm0_bit(get_value(TIMER0_WGM_NORMAL, spn_TIMER0_WGM_OPT.text))
+    elif TIMER0_WGM["pwm"] == spn_TIMER0_WGM.text:
+        com0a_bit(get_value(TIMER0_COM_PWM, spn_TIMER0_COM_A.text))
+        com0b_bit(get_value(TIMER0_COM_PWM, spn_TIMER0_COM_B.text))
+        wgm0_bit(get_value(TIMER0_WGM_PWM, spn_TIMER0_WGM_OPT.text))
+    elif TIMER0_WGM["fastpwm"] == spn_TIMER0_WGM.text:
+        com0a_bit(get_value(TIMER0_COM_FASTPWM, spn_TIMER0_COM_A.text))
+        com0b_bit(get_value(TIMER0_COM_FASTPWM, spn_TIMER0_COM_B.text))
+        wgm0_bit(get_value(TIMER0_WGM_FASTPWM, spn_TIMER0_WGM_OPT.text))
 
     timer0_int_bits()
 
