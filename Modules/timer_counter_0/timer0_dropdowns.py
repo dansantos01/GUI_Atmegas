@@ -31,18 +31,18 @@ TIMER0_COM_NORMAL = {
     3: "Set OC0A on Compare Match"
 }
 
-TIMER0_COM_FASTPWM = {
-    0: "Normal port operation, OC0A disconnected.",
-    1: "Toggle OC0A on Compare Match",
-    2: "Clear OC0A on Compare Match, set OC0A at BOTTOM, (non-inverting mode).",
-    3: "Set OC0A on Compare Match, clear OC0A at BOTTOM, (inverting mode)."
-}
-
 TIMER0_COM_PWM = {
     0: "Normal port operation, OC0A disconnected.",
     1: "Toggle OC0A on Compare Match",
     2: "Clear OC0A on Compare Match when up-counting. Set OC0A on Compare Match when down-counting.",
     3: "Set OC0A on Compare Match when up-counting. Clear OC0A on Compare Match when down-counting."
+}
+
+TIMER0_COM_FASTPWM = {
+    0: "Normal port operation, OC0A disconnected.",
+    1: "Toggle OC0A on Compare Match",
+    2: "Clear OC0A on Compare Match, set OC0A at BOTTOM, (non-inverting mode).",
+    3: "Set OC0A on Compare Match, clear OC0A at BOTTOM, (inverting mode)."
 }
 
 TIMER0_CLOCK = {
