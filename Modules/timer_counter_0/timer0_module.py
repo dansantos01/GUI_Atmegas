@@ -43,32 +43,33 @@ def timer0_is_open():
 
 def timer0_tab_start(self, btn):
     timer0_t = TabbedPanelItem(text="TIMER0")
-    tc = GridLayout(cols=2)
-    label = Label(text="Mode of Operation:", size_hint_x=.3)
-    tc.add_widget(label)
+    grid = GridLayout(cols=2)
+    create_label(grid, "Mode of Operation")
     WGM_spn.bind(text=update_spinner)
-    tc.add_widget(WGM_spn)
-    tc.add_widget(Label(text="Compare Output Mode A:", size_hint_x=.3))
-    tc.add_widget(COM0A_spn)
-    tc.add_widget(Label(text="Compare Output Mode B:", size_hint_x=.3))
-    tc.add_widget(COM0B_spn)
-    tc.add_widget(Label(text="Prescaler", size_hint_x=.3))
-    tc.add_widget(PRE0_spn)
-    tc.add_widget(Label(text="Timer/Counter Output Compare Match A Interrupt Enable"))
+    grid.add_widget(WGM_spn)
+    create_label(grid, "Compare Output Mode A")
+    grid.add_widget(COM0A_spn)
+    create_label(grid, "Compare Output Mode B")
+    grid.add_widget(COM0B_spn)
+    create_label(grid, "Prescaler")
+    grid.add_widget(PRE0_spn)
+    create_label(grid, "Timer/Counter Output Compare Match A Interrupt Enable")
     switch = Switch()
     switch.bind(active=int_cma_callback)
-    tc.add_widget(switch)
-    tc.add_widget(Label(text="Timer/Counter Output Compare Match B Interrupt Enable"))
+    grid.add_widget(switch)
+    create_label(grid, "Timer/Counter Output Compare Match B Interrupt Enable")
     switch1 = Switch()
     switch1.bind(active=int_cmb_callback)
-    tc.add_widget(switch1)
-    tc.add_widget(Label(text="Timer/Counter0 Overflow Interrupt Enable"))
+    grid.add_widget(switch1)
+    create_label(grid, "Timer/Counter0 Overflow Interrupt Enable")
     switch2 = Switch()
     switch2.bind(active=int_ovf_callback)
-    tc.add_widget(switch2)
+    grid.add_widget(switch2)
+    print(TIMER0_WGM.keys())
+    spn_values_update(WGM_spn, TIMER0_WGM)
 
     # Put Content in Tab and add Tab to be available
-    timer0_t.content = tc
+    timer0_t.content = grid
     self.add_widget(timer0_t)
     global timer0_OPEN
     timer0_OPEN = True
@@ -90,10 +91,10 @@ def int_ovf_callback(instance, value):
 
 
 def update_spinner(obj, text):
-    if TIMER0_mode[1] == text or TIMER0_mode[5] == text:
+    if TIMER0_WGM[1] == text or TIMER0_WGM[5] == text:
         COM0A_spn.values = [COM0_menu[2][0], COM0_menu[2][1], COM0_menu[2][2], COM0_menu[2][3]]
         COM0B_spn.values = [COM0_menu[2][0], COM0_menu[2][1], COM0_menu[2][2], COM0_menu[2][3]]
-    elif TIMER0_mode[3] == text or TIMER0_mode[7] == text:
+    elif TIMER0_WGM[3] == text or TIMER0_WGM[7] == text:
         COM0A_spn.values = [COM0_menu[1][0], COM0_menu[1][1], COM0_menu[1][2], COM0_menu[1][3]]
         COM0B_spn.values = [COM0_menu[1][0], COM0_menu[1][1], COM0_menu[1][2], COM0_menu[1][3]]
     else:
@@ -178,7 +179,7 @@ def timer0_int_bits():
 
 def get_timer0():
     clk0_bit(get_value(CLK0_sel, PRE0_spn.text))
-    wgm = get_value(TIMER0_mode, WGM_spn.text)
+    wgm = get_value(TIMER0_WGM, WGM_spn.text)
     wgm0_bit(wgm)
 
     if wgm == 3 or wgm == 7:
