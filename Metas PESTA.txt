@@ -1,0 +1,17 @@
+facilitar a criação de no ui através de funções que pre fazem os componentes (Label/Spinner/switchs) de acordo com o resto do programa
+tornar os métodos utilizados em cada módulo o mais globais possíveis, ou seja, capazes de funcionar para todas as situações que possam surgir
+ou pelo menos a maioria delas
+linguagem mais percetivel
+Adicionar OCR e ICR nos timers
+Acrescento de módulos ADC e USART
+Adcionar outro micro(328p) inclusive com um menu a dar a escolher o micro desejado 
+Colocar toda a informação de criação de UI respetiva a cada micro num ficheiro exclusivo a ele próprio
+
+Relatorio
+
+Melhorar introdução
+Refazer Estado de Arte
+Omitir Python/Kivy
+Melhorar descrição de projeto
+Tutorial de como criar um novo micro e respetivos módulos(?)
+

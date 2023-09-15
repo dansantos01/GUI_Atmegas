@@ -44,7 +44,7 @@ def timer0_is_open():
 def timer0_tab_start(self, btn):
     timer0_t = TabbedPanelItem(text="TIMER0")
     tc = GridLayout(cols=2)
-    label = Label(text=f"Mode of Operation:", size_hint_x=.3)
+    label = Label(text="Mode of Operation:", size_hint_x=.3)
     tc.add_widget(label)
     WGM_spn.bind(text=update_spinner)
     tc.add_widget(WGM_spn)
@@ -52,7 +52,6 @@ def timer0_tab_start(self, btn):
     tc.add_widget(COM0A_spn)
     tc.add_widget(Label(text="Compare Output Mode B:", size_hint_x=.3))
     tc.add_widget(COM0B_spn)
-    # tc.add_widget(Button(text="HAYAA"))
     tc.add_widget(Label(text="Prescaler", size_hint_x=.3))
     tc.add_widget(PRE0_spn)
     tc.add_widget(Label(text="Timer/Counter Output Compare Match A Interrupt Enable"))

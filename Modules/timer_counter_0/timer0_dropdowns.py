@@ -51,14 +51,36 @@ CLK0_sel = {
     7: "External clock source on T0 pin. Clock on rising edge"
 }
 
-WGM_spn = Spinner(
-    text="Choose Mode of Operation",
-    text_autoupdate=True,
-    values=(TIMER0_mode[0], TIMER0_mode[1], TIMER0_mode[2], TIMER0_mode[3], TIMER0_mode[4], TIMER0_mode[5],
-            TIMER0_mode[6], TIMER0_mode[7]),
-    size_hint=(0.5, 0.2),
-    pos_hint={"center_x": .5, "center_y": .5}
-)
+
+def create_spinner(vect, size):
+    spn = Spinner(
+        text="Choose Mode of Operation",
+        text_autoupdate=True,
+        values=(TIMER0_mode[0], TIMER0_mode[1], TIMER0_mode[2], TIMER0_mode[3], TIMER0_mode[4], TIMER0_mode[5],
+                TIMER0_mode[6], TIMER0_mode[7]),
+        size_hint=(0.5, 0.2),
+        pos_hint={"center_x": .5, "center_y": .5}
+    )
+    return spn
+
+
+def update_spinner():
+    spn = Spinner(
+        text="Choose Mode of Operation",
+        text_autoupdate=True,
+        values=(TIMER0_mode[0], TIMER0_mode[1], TIMER0_mode[2], TIMER0_mode[3], TIMER0_mode[4], TIMER0_mode[5],
+                TIMER0_mode[6], TIMER0_mode[6]),
+        size_hint=(0.5, 0.2),
+        pos_hint={"center_x": .5, "center_y": .5}
+    )
+    return spn
+
+
+
+WGM_spn = create_spinner(TIMER0_mode, len(TIMER0_mode))
+
+WGM_spn = update_spinner()
+
 COM0A_spn = Spinner(
     text="Choose Mode of Operation",
     text_autoupdate=True,
