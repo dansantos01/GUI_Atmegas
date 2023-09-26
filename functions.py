@@ -4,6 +4,7 @@ from kivy.uix.switch import Switch
 from kivy.uix.label import Label
 from kivy.uix.spinner import Spinner
 from kivy.uix.tabbedpanel import TabbedPanelItem, TabbedPanel
+from register import *
 
 
 def get_value(var, match):
@@ -18,19 +19,12 @@ def get_value_k(var, match, k):
             return k
 
 
-def decimal_to_bit(integer, register):
+def decimal_to_bit(value, length):
     binary = ""
-    binary = bin(integer).replace("0b", "") [::-1]
-    print(binary)
-    print(register)
-    for x in range(len(register)):
-        if x < len(binary):
-            if binary[x] == "1":
-                register[x] = True
-            else:
-                register[x] = False
-        else:
-            register[x] = False
+    binary = bin(value).replace("0b", "")
+    for n in (range(length - len(binary))):
+        binary = "0" + binary
+    return binary
 
 
 def create_label(location, text):
@@ -64,5 +58,9 @@ def create_switch_ui(description, switch, location):
     location.add_widget(switch)
 
 
-
+def change_target_bit(status, target_reg, target_bit):
+    if status == '1':
+        target_reg.set(target_bit)
+    else:
+        target_reg.clear(target_bit)
 

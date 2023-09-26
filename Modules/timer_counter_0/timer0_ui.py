@@ -1,6 +1,5 @@
 from functions import *
 
-
 # Dropdown box text
 
 TIMER0_WGM = {
@@ -96,7 +95,7 @@ swt_TIMER0_OVF = Switch()
 
 def timer0_tab_start(self, btn):
     from Modules.timer_counter_0.timer0_codegen import timer0_set_status
-    timer0_t = TabbedPanelItem(text="TIMER0")  # Create Tabbed Panel
+    timer0_tab = TabbedPanelItem(text="TIMER0")  # Create Tabbed Panel
     grid = GridLayout(cols=2)  # Store the content in a grid layout
 
     # UI Generation
@@ -112,6 +111,6 @@ def timer0_tab_start(self, btn):
 
     # Put Content in Tab and make it available
 
-    timer0_t.content = grid
-    self.add_widget(timer0_t)
+    timer0_tab.content = grid
+    self.add_widget(timer0_tab)
     timer0_set_status(1)

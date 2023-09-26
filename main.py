@@ -22,6 +22,8 @@ from Modules.timer_counter_1.timer1_module import *
 from Modules.timer_counter_1.timer1_dropdowns import *
 from Modules.timer_counter_2.timer2_module import *
 from Modules.timer_counter_2.timer2_dropdowns import *
+from Modules.analog_to_digital_converter.adc_ui import *
+from Modules.analog_to_digital_converter.adc_codegen import *
 
 filename = "REGISTER_CONFIG.h"
 path = "output_files/"
@@ -64,6 +66,15 @@ class TestWindow(Screen):
                 f.write(assr.print_code())
         else:
             print("Timer 1 is closed")
+        if adc_is_open():
+            get_adc()
+            with open(path + filename, "w") as f:
+                f.write(admux.print_code())
+                f.write(adcsra.print_code())
+                f.write(adcsrb.print_code())
+                f.write(didr0.print_code())
+        else:
+            print("Timer 1 is closed")
 
 
 class TestTabs(TabbedPanel):
@@ -86,6 +97,10 @@ class TestTabs(TabbedPanel):
         self.mg.add_widget(Label(text="8-bit Timer/Counter2 with PWM\n   and Asynchronous Operation"))
         btn3 = Button(text="TIMER2")
         btn3.bind(on_release=lambda x: timer2_tab_start(self, btn3))
+        self.mg.add_widget(btn3)
+        self.mg.add_widget(Label(text="Analog-to-Digital Converter"))
+        btn3 = Button(text="ADC")
+        btn3.bind(on_release=lambda x: adc_tab_start(self, btn3))
         self.mg.add_widget(btn3)
         self.main_t.content = self.mg
 

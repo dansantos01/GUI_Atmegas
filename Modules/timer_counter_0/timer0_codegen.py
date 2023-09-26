@@ -1,5 +1,4 @@
 from Modules.timer_counter_0.timer0_ui import *
-from register import *
 from functions import *
 
 
@@ -9,7 +8,8 @@ tccr0b = Register("TCCR0B", "00000000")
 timsk0 = Register("TIMSK0", "00000000")
 
 
-# Open or Not
+# Tab Status
+
 timer0_OPEN = False
 
 
@@ -33,20 +33,11 @@ def clk0_bit(value):
     for n in (range(3 - len(binary))):
         binary = "0" + binary
     # CS02
-    if binary[0] == "1":
-        tccr0b.set("2")
-    else:
-        tccr0b.clear("2")
+    change_target_bit(binary[0], tccr0b, "2")
     # CS01
-    if binary[1] == "1":
-        tccr0b.set("1")
-    else:
-        tccr0b.clear("1")
+    change_target_bit(binary[1], tccr0b, "1")
     # CS00
-    if binary[2] == "1":
-        tccr0b.set("0")
-    else:
-        tccr0b.clear("0")
+    change_target_bit(binary[2], tccr0b, "0")
 
 
 def wgm0_bit(value):
@@ -56,10 +47,16 @@ def wgm0_bit(value):
         binary = "0" + binary
     if binary[0] == "1":
         tccr0b.set("3")
+    else:
+        tccr0b.clear("3")
     if binary[1] == "1":
         tccr0a.set("1")
+    else:
+        tccr0a.clear("1")
     if binary[2] == "1":
         tccr0a.set("0")
+    else:
+        tccr0a.clear("0")
 
 
 def com0a_bit(value):
