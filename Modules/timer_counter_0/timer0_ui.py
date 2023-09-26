@@ -1,7 +1,7 @@
-from kivy.uix.spinner import Spinner
 from functions import *
 
-### SELECTION INFO
+
+# Dropdown box text
 
 TIMER0_WGM = {
     "normal": "Normal / CTC",
@@ -56,11 +56,16 @@ TIMER0_CLOCK = {
     7: "External clock source on T0 pin. Clock on rising edge"
 }
 
+
+# Dropdown box creation
+
 spn_TIMER0_WGM = create_spinner(TIMER0_WGM)
 spn_TIMER0_WGM_OPT = create_spinner(TIMER0_WGM_NORMAL)
 spn_TIMER0_COM_A = create_spinner(TIMER0_COM_NORMAL)
 spn_TIMER0_COM_B = create_spinner(TIMER0_COM_NORMAL)
 spn_TIMER0_CLOCK = create_spinner(TIMER0_CLOCK)
+
+# Dropdown box dynamic update
 
 
 def wgm_spinner_update(obj, text):
@@ -80,3 +85,33 @@ def wgm_spinner_update(obj, text):
 
 spn_TIMER0_WGM.bind(text=wgm_spinner_update)
 
+# Switch Creation
+
+swt_TIMER0_OCM_A = Switch()
+swt_TIMER0_OCM_B = Switch()
+swt_TIMER0_OVF = Switch()
+
+# Tab Creation
+
+
+def timer0_tab_start(self, btn):
+    from Modules.timer_counter_0.timer0_codegen import timer0_set_status
+    timer0_t = TabbedPanelItem(text="TIMER0")  # Create Tabbed Panel
+    grid = GridLayout(cols=2)  # Store the content in a grid layout
+
+    # UI Generation
+
+    create_spinner_ui("Wave Generation Mode", spn_TIMER0_WGM, grid)
+    create_spinner_ui("Wave Generation Mode Options", spn_TIMER0_WGM_OPT, grid)
+    create_spinner_ui("Compare Output Mode A", spn_TIMER0_COM_A, grid)
+    create_spinner_ui("Compare Output Mode B", spn_TIMER0_COM_B, grid)
+    create_spinner_ui("Clock", spn_TIMER0_CLOCK, grid)
+    create_switch_ui("Timer/Counter Output Compare Match A Interrupt Enable", swt_TIMER0_OCM_A, grid)
+    create_switch_ui("Timer/Counter Output Compare Match B Interrupt Enable", swt_TIMER0_OCM_B, grid)
+    create_switch_ui("Timer/Counter0 Overflow Interrupt Enable", swt_TIMER0_OVF, grid)
+
+    # Put Content in Tab and make it available
+
+    timer0_t.content = grid
+    self.add_widget(timer0_t)
+    timer0_set_status(1)

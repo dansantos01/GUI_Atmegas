@@ -16,12 +16,12 @@ from kivy.uix.spinner import Spinner
 from kivy.uix.switch import Switch
 from register import *
 from functions import *
-from Modules.timer_counter_0.timer0_module import *
-import Modules.timer_counter_0.timer0_dropdowns
-from Modules.timer_counter_2.timer2_module import *
-import Modules.timer_counter_2.timer2_dropdowns
+from Modules.timer_counter_0.timer0_ui import *
+from Modules.timer_counter_0.timer0_codegen import *
 from Modules.timer_counter_1.timer1_module import *
-import Modules.timer_counter_1.timer1_dropdowns
+from Modules.timer_counter_1.timer1_dropdowns import *
+from Modules.timer_counter_2.timer2_module import *
+from Modules.timer_counter_2.timer2_dropdowns import *
 
 filename = "REGISTER_CONFIG.h"
 path = "output_files/"
@@ -66,14 +66,11 @@ class TestWindow(Screen):
             print("Timer 1 is closed")
 
 
-
-
 class TestTabs(TabbedPanel):
 
     mg = GridLayout(cols=2)
     background_color = (0, 0, 0, 1)
     main_t = TabbedPanelItem(text="Main")
-
 
     def __init__(self, **kwargs):
         super(TestTabs, self).__init__(**kwargs)

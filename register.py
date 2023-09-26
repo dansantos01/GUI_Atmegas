@@ -27,7 +27,7 @@ class Register:
         self.reg_data = output_string
 
     def print_code(self):
-        return self.name + " |= 0b" + self.reg_data
+        return self.name + " |= 0b" + self.reg_data + "\n"
 
 
 

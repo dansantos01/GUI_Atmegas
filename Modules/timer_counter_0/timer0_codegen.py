@@ -1,88 +1,31 @@
+from Modules.timer_counter_0.timer0_ui import *
 from register import *
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.button import Button
-from kivy.uix.switch import Switch
-from kivy.uix.label import Label
-from kivy.uix.spinner import Spinner
-from kivy.uix.tabbedpanel import TabbedPanelItem, TabbedPanel
 from functions import *
-from Modules.timer_counter_0.timer0_dropdowns import *
 
-### Variables
 
 # Registers
 tccr0a = Register("TCCR0A", "00000000")
 tccr0b = Register("TCCR0B", "00000000")
 timsk0 = Register("TIMSK0", "00000000")
 
-# Bits
-
-# Interrupt flags
-ocie0a = False
-ocie0b = False
-toie0 = False
 
 # Open or Not
 timer0_OPEN = False
-
-
-# Dropdown boxes
-
-
-
-
-### METHODS
 
 
 def timer0_is_open():
     return timer0_OPEN
 
 
-# TAB CREATION
-
-
-def timer0_tab_start(self, btn):
-    timer0_t = TabbedPanelItem(text="TIMER0")
-    grid = GridLayout(cols=2)
-    create_spinner_ui("Wave Generation Mode", spn_TIMER0_WGM, grid)
-    create_spinner_ui("Wave Generation Mode Options", spn_TIMER0_WGM_OPT, grid)
-    create_spinner_ui("Compare Output Mode A", spn_TIMER0_COM_A, grid)
-    create_spinner_ui("Compare Output Mode B", spn_TIMER0_COM_B, grid)
-    create_spinner_ui("Clock", spn_TIMER0_CLOCK, grid)
-    create_label(grid, "Timer/Counter Output Compare Match A Interrupt Enable")
-    switch = Switch()
-    switch.bind(active=int_cma_callback)
-    grid.add_widget(switch)
-    create_label(grid, "Timer/Counter Output Compare Match B Interrupt Enable")
-    switch1 = Switch()
-    switch1.bind(active=int_cmb_callback)
-    grid.add_widget(switch1)
-    create_label(grid, "Timer/Counter0 Overflow Interrupt Enable")
-    switch2 = Switch()
-    switch2.bind(active=int_ovf_callback)
-    grid.add_widget(switch2)
-
-    # Put Content in Tab and add Tab to be available
-    timer0_t.content = grid
-    self.add_widget(timer0_t)
+def timer0_set_status(status):
     global timer0_OPEN
-    timer0_OPEN = True
+    if status == 1:
+        timer0_OPEN = True
+    else:
+        timer0_OPEN = False
 
 
-def int_cma_callback(instance, value):
-    global ocie0a
-    ocie0a = value
-
-
-def int_cmb_callback(instance, value):
-    global ocie0b
-    ocie0b = value
-
-
-def int_ovf_callback(instance, value):
-    global toie0
-    toie0 = value
-
+# Code Generation
 
 def clk0_bit(value):
     binary = ""
@@ -150,13 +93,10 @@ def com0b_bit(value):
 
 
 def timer0_int_bits():
-    global toie0
-    global ocie0a
-    global ocie0b
 
-    timsk0.set("0") if toie0 else timsk0.clear("0")
-    timsk0.set("1") if ocie0a else timsk0.clear("1")
-    timsk0.set("2") if ocie0b else timsk0.clear("2")
+    timsk0.set("0") if swt_TIMER0_OVF.active else timsk0.clear("0")
+    timsk0.set("1") if swt_TIMER0_OCM_A.active else timsk0.clear("1")
+    timsk0.set("2") if swt_TIMER0_OCM_B.active else timsk0.clear("2")
 
 
 def get_timer0():

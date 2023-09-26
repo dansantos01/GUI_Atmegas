@@ -3,6 +3,7 @@ from kivy.uix.button import Button
 from kivy.uix.switch import Switch
 from kivy.uix.label import Label
 from kivy.uix.spinner import Spinner
+from kivy.uix.tabbedpanel import TabbedPanelItem, TabbedPanel
 
 
 def get_value(var, match):
@@ -58,6 +59,9 @@ def create_spinner(values_dict):
 
 
 def create_switch_ui(description, switch, location):
+    location.add_widget(Label(text=description, size_hint_x=.7))
+    switch.size_hint_x = 0.3
+    location.add_widget(switch)
 
 
 
