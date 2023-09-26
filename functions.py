@@ -57,5 +57,8 @@ def create_spinner(values_dict):
     return spn
 
 
+def create_switch_ui(description, switch, location):
+
+
 
 
