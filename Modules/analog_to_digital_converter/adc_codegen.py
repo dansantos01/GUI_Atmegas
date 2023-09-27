@@ -1,5 +1,5 @@
 from Modules.analog_to_digital_converter.adc_ui import *
-from functions import *
+
 
 # Registers
 

@@ -1,5 +1,4 @@
 from Modules.timer_counter_0.timer0_ui import *
-from functions import *
 
 
 # Registers

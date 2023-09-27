@@ -4,6 +4,7 @@ from kivy.uix.switch import Switch
 from kivy.uix.label import Label
 from kivy.uix.spinner import Spinner
 from kivy.uix.tabbedpanel import TabbedPanelItem, TabbedPanel
+from kivy.uix.textinput import TextInput
 from register import *
 
 
@@ -56,6 +57,16 @@ def create_switch_ui(description, switch, location):
     location.add_widget(Label(text=description, size_hint_x=.7))
     switch.size_hint_x = 0.3
     location.add_widget(switch)
+
+
+def create_textinput_ui(description, textinput, location):
+    location.add_widget(Label(text=description, size_hint_x=.3))
+    location.add_widget(textinput)
+
+
+def create_label_ui(description, label, location):
+    location.add_widget(Label(text=description, size_hint_x=.3))
+    location.add_widget(label)
 
 
 def change_target_bit(status, target_reg, target_bit):
