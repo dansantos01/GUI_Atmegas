@@ -24,6 +24,8 @@ from Modules.timer_counter_2.timer2_module import *
 from Modules.timer_counter_2.timer2_dropdowns import *
 from Modules.analog_to_digital_converter.adc_ui import *
 from Modules.analog_to_digital_converter.adc_codegen import *
+from Modules.usart_0.usart0_ui import *
+from Modules.usart_0.usart0_codegen import *
 
 filename = "REGISTER_CONFIG.h"
 path = "output_files/"
@@ -99,9 +101,13 @@ class TestTabs(TabbedPanel):
         btn3.bind(on_release=lambda x: timer2_tab_start(self, btn3))
         self.mg.add_widget(btn3)
         self.mg.add_widget(Label(text="Analog-to-Digital Converter"))
-        btn3 = Button(text="ADC")
-        btn3.bind(on_release=lambda x: adc_tab_start(self, btn3))
-        self.mg.add_widget(btn3)
+        btn4 = Button(text="ADC")
+        btn4.bind(on_release=lambda x: adc_tab_start(self, btn3))
+        self.mg.add_widget(btn4)
+        self.mg.add_widget(Label(text="USART"))
+        btn5 = Button(text="ADC")
+        btn5.bind(on_release=lambda x: usart0_tab_start(self, btn3))
+        self.mg.add_widget(btn5)
         self.main_t.content = self.mg
 
 

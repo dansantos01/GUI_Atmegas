@@ -54,12 +54,15 @@ swt_USART0_TXEN = Switch()
 
 txtinp_freq = TextInput()
 txtinp_baudrate = TextInput()
+txtinp_baudrate.disabled = True
 
 # Dynamic Changes
 
+spn_USART0_CLKPOL.disabled = True
+
 
 def mode_disables(obj, text):
-    if USART0_MSEL[0] == spn_USART0_MSEL.text:
+    if not USART0_MSEL[0] == spn_USART0_MSEL.text:
         spn_USART0_CLKPOL.disabled = False
         swt_USART0_U2X.active = False
         swt_USART0_U2X.disabled = True
@@ -70,10 +73,12 @@ def mode_disables(obj, text):
 
 
 def check_parameters_freq(obj, text):
+    print("somehting")
     if not text.isdigit():
         print("can't work with this")
         txtinp_baudrate.disabled = True
     else:
+        print("something else")
         txtinp_baudrate.disabled = False
 
 
@@ -82,22 +87,27 @@ def check_parameters_baudrate(obj, text):
         print("can't work with this")
 
     baudrate = float(text)
-    freq = float(txtinp_freq) * 1000000
-
+    freq = float(txtinp_freq.text) * 1000000
+    br_limit = [0, 0]
     # For Asynchronous Normal mode
 
     if swt_USART0_U2X.active:
-        max_br = freq/(8*4096)
-        max_br = max_br + (max_br * 0.05)
-        min_br = freq/(8*1)
-        min_br = min_br - (min_br * 0.05)
+        br_limit = calc_minmax_baudrate(freq, 8, 1, 4096)
+    if not swt_USART0_U2X.active and spn_USART0_CLKPOL.disabled:
+        br_limit = calc_minmax_baudrate(freq, 16, 1, 4096)
+    if not swt_USART0_U2X.active and not spn_USART0_CLKPOL.disabled:
+        br_limit = calc_minmax_baudrate(freq, 2, 1, 4096)
+
+    print(br_limit[0])
+    print("<- min max->")
+    print(br_limit[1])
 
     # For Asychronous
 
 
 spn_USART0_MSEL.bind(text=mode_disables)
-txtinp_freq.bind(on_text_validate=check_parameters_freq)
-txtinp_baudrate.bind(on_text_validate=check_parameters_baudrate)
+txtinp_freq.bind(text=check_parameters_freq)
+txtinp_baudrate.bind(text=check_parameters_baudrate)
 
 # Tab Creation
 
@@ -115,15 +125,15 @@ def usart0_tab_start(self, btn):
     create_spinner_ui("Stop Bit Select", spn_USART0_SBS, grid)
     create_spinner_ui("Clock Polarity", spn_USART0_CLKPOL, grid)
     create_switch_ui("Double Speed", swt_USART0_U2X, grid)
-    create_switch_ui("RX Complete Interrupt Enable", swt_USART0_RXEN, grid)
-    create_switch_ui("TX Complete Interrupt Enable", swt_USART0_TXEN, grid)
+    create_switch_ui("RX Complete Interrupt Enable", swt_USART0_RXCIE, grid)
+    create_switch_ui("TX Complete Interrupt Enable", swt_USART0_TXCIE, grid)
     create_switch_ui("Receiver Enable", swt_USART0_RXEN, grid)
     create_switch_ui("Transmitter Enable", swt_USART0_TXEN, grid)
-    create_switch_ui("USART Data Register Empty Interrupt Enable", swt_USART0_MCPM, grid)
+    create_switch_ui("USART Data Register Empty Interrupt Enable", swt_USART0_UDRIE, grid)
     create_switch_ui("Multi-processor Communication Mode", swt_USART0_MCPM, grid)
     create_textinput_ui("Insert your Microcontroller Clock Frequency (in MHz)", txtinp_freq, grid)
     create_textinput_ui("Insert desired Baud Rate ( in bps)", txtinp_baudrate, grid)
-    create_label_ui("Error (%)", )
+    # create_label_ui("Error (%)", )
     # Put Content in Tab and make it available
 
     usart0_tab.content = grid

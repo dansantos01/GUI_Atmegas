@@ -60,7 +60,8 @@ def create_switch_ui(description, switch, location):
 
 
 def create_textinput_ui(description, textinput, location):
-    location.add_widget(Label(text=description, size_hint_x=.3))
+    location.add_widget(Label(text=description, size_hint_x=.7))
+    textinput.size_hint_x = 0.3
     location.add_widget(textinput)
 
 
@@ -75,3 +76,10 @@ def change_target_bit(status, target_reg, target_bit):
     else:
         target_reg.clear(target_bit)
 
+
+def calc_minmax_baudrate(freq, multiplier, mn, mx):
+    max_br = freq / (multiplier * mx)
+    max_br = max_br + (max_br * 0.05)
+    min_br = freq / (multiplier * mn)
+    min_br = min_br - (min_br * 0.05)
+    return [min_br, max_br]
