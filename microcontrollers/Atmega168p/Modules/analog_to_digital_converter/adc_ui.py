@@ -69,7 +69,7 @@ swt_ADC_DID5 = Switch()
 # Tab Creation
 
 def adc_tab_start(self, btn):
-    from Modules.analog_to_digital_converter.adc_codegen import adc_set_status
+    from microcontrollers.Atmega168p.Modules.analog_to_digital_converter.adc_codegen import adc_set_status
     adc_tab = TabbedPanelItem(text="ADC")  # create tabbed panel
     grid = GridLayout(cols=2)  # Store the content in a grid layout
 

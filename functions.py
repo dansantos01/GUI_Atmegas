@@ -77,9 +77,25 @@ def change_target_bit(status, target_reg, target_bit):
         target_reg.clear(target_bit)
 
 
+def calc_baudrate(freq, multiplier, ubrr):
+    baudrate = freq/(multiplier*(ubrr+1))
+    return baudrate
+
+
 def calc_minmax_baudrate(freq, multiplier, mn, mx):
-    max_br = freq / (multiplier * mx)
-    max_br = max_br + (max_br * 0.05)
-    min_br = freq / (multiplier * mn)
-    min_br = min_br - (min_br * 0.05)
+    max_br = calc_baudrate(freq, multiplier, mn-1)
+    min_br = calc_baudrate(freq, multiplier, mx-1)
     return [min_br, max_br]
+
+
+def calc_ubrr(freq, baudrate, multiplier):
+    ubrr = freq/(baudrate*multiplier)-1
+    return round(ubrr, 0)
+
+
+def calc_baudrate_error(freq, baudrate, ubrr, multiplier):
+    br_closest = calc_baudrate(freq, multiplier, ubrr)
+    error = ((br_closest/baudrate)-1)*100
+    return error
+
+

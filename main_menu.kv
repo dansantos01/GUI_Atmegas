@@ -2,8 +2,7 @@
 
 WindowManager:
     MainWindow:
-    TestWindow:
-    SecondWindow:
+    TabWindow:
 
 <Label1@Label>:
     # font_name: "Arial"
@@ -55,15 +54,15 @@ WindowManager:
                 on_release: app.stop()
 
 
-<TestTabs>
+<Atmega168pTab>
     do_default_tab: False
 
-<TestWindow@TabbedPanel>:
+<TabWindow@TabbedPanel>:
     name: "test"
     id: "test_tp"
     BoxLayout:
         orientation: "vertical"
-        TestTabs:
+        Atmega168pTab:
         GridLayout:
             cols: 3
             size_hint: 1, 0.05

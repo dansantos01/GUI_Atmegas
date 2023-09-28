@@ -1,4 +1,4 @@
-from Modules.usart_0.usart0_ui import *
+from microcontrollers.Atmega168p.Modules.usart_0.usart0_ui import *
 
 
 # Registers

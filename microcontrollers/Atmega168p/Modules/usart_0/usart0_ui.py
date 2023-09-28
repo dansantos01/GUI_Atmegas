@@ -52,9 +52,15 @@ swt_USART0_TXEN = Switch()
 
 # Text Input Creation
 
-txtinp_freq = TextInput()
-txtinp_baudrate = TextInput()
+txtinp_freq = TextInput(multiline=False)
+txtinp_baudrate = TextInput(multiline=False)
 txtinp_baudrate.disabled = True
+
+# Label Creation
+
+error = Label(text="Error(%): 0.0")
+br_limit_label = Label(text="Min Baud Rate: 0\n"
+                   "Max Baud Rate: 0")
 
 # Dynamic Changes
 
@@ -71,49 +77,94 @@ def mode_disables(obj, text):
         spn_USART0_CLKPOL.disabled = True
         swt_USART0_U2X.disabled = False
 
-
-def check_parameters_freq(obj, text):
-    print("somehting")
-    if not text.isdigit():
-        print("can't work with this")
+    if not txtinp_freq.text.isdigit():
         txtinp_baudrate.disabled = True
     else:
-        print("something else")
+        freq = float(txtinp_freq.text) * 1000000
         txtinp_baudrate.disabled = False
+        br_limit = [0, 0]
+
+        # For Asynchronous Normal mode
+
+        if swt_USART0_U2X.active:
+            br_limit = calc_minmax_baudrate(freq, 8, 1, 4096)
+
+        # For Asynchronous Double Speed
+
+        if not swt_USART0_U2X.active and spn_USART0_CLKPOL.disabled:
+            br_limit = calc_minmax_baudrate(freq, 16, 1, 4096)
+
+        # For Synchronous
+
+        if not swt_USART0_U2X.active and not spn_USART0_CLKPOL.disabled:
+            br_limit = calc_minmax_baudrate(freq, 2, 1, 4096)
+
+        br_limit_label.text = "Min Baud Rate: " + str(int(br_limit[0])) + "\nMax Baud Rate: " + str(int(br_limit[1]))
+
+def check_parameters_freq(obj, value):
+    if not txtinp_freq.text.isdigit():
+        txtinp_baudrate.disabled = True
+    else:
+        freq = float(txtinp_freq.text) * 1000000
+        txtinp_baudrate.disabled = False
+        br_limit = [0, 0]
+
+        # For Asynchronous Normal mode
+
+        if swt_USART0_U2X.active:
+            br_limit = calc_minmax_baudrate(freq, 8, 1, 4096)
+
+        # For Asynchronous Double Speed
+
+        if not swt_USART0_U2X.active and spn_USART0_CLKPOL.disabled:
+            br_limit = calc_minmax_baudrate(freq, 16, 1, 4096)
+
+        # For Synchronous
+
+        if not swt_USART0_U2X.active and not spn_USART0_CLKPOL.disabled:
+            br_limit = calc_minmax_baudrate(freq, 2, 1, 4096)
+
+        br_limit_label.text = "Min Baud Rate: " + str(int(br_limit[0])) + "\nMax Baud Rate: " + str(int(br_limit[1]))
 
 
-def check_parameters_baudrate(obj, text):
+def check_parameters_baudrate(obj):
+    text = txtinp_baudrate.text
+    ubrr = 0
     if not text.isdigit():
         print("can't work with this")
+    else:
+        baudrate = int(text)
+        freq = float(txtinp_freq.text) * 1000000
 
-    baudrate = float(text)
-    freq = float(txtinp_freq.text) * 1000000
-    br_limit = [0, 0]
-    # For Asynchronous Normal mode
+        # For Asynchronous Normal mode
 
-    if swt_USART0_U2X.active:
-        br_limit = calc_minmax_baudrate(freq, 8, 1, 4096)
-    if not swt_USART0_U2X.active and spn_USART0_CLKPOL.disabled:
-        br_limit = calc_minmax_baudrate(freq, 16, 1, 4096)
-    if not swt_USART0_U2X.active and not spn_USART0_CLKPOL.disabled:
-        br_limit = calc_minmax_baudrate(freq, 2, 1, 4096)
+        if swt_USART0_U2X.active:
+            ubrr = calc_ubrr(freq, baudrate, 8)
+            error.text = "Error (%): " + str(round(calc_baudrate_error(freq, baudrate, ubrr, 8), 1))
 
-    print(br_limit[0])
-    print("<- min max->")
-    print(br_limit[1])
+        # For Asynchronous Double Speed
 
-    # For Asychronous
+        if not swt_USART0_U2X.active and spn_USART0_CLKPOL.disabled:
+            ubrr = calc_ubrr(freq, baudrate, 16)
+            error.text = "Error (%): " + str(round(calc_baudrate_error(freq, baudrate, ubrr, 16), 1))
+
+        # For Synchronous
+
+        if not swt_USART0_U2X.active and not spn_USART0_CLKPOL.disabled:
+            ubrr = calc_ubrr(freq, baudrate, 2)
+            error.text = "Error (%): " + str(round(calc_baudrate_error(freq, baudrate, ubrr, 2), 1))
 
 
 spn_USART0_MSEL.bind(text=mode_disables)
 txtinp_freq.bind(text=check_parameters_freq)
-txtinp_baudrate.bind(text=check_parameters_baudrate)
+txtinp_baudrate.bind(on_text_validate=check_parameters_baudrate)
+swt_USART0_U2X.bind(active=check_parameters_freq)
 
 # Tab Creation
 
 
 def usart0_tab_start(self, btn):
-    from Modules.usart_0.usart0_codegen import usart0_set_status
+    from microcontrollers.Atmega168p.Modules.usart_0.usart0_codegen import usart0_set_status
     usart0_tab = TabbedPanelItem(text="USART0")  # Create Tabbed Panel
     grid = GridLayout(cols=2)  # Store the content in a grid layout
 
@@ -133,6 +184,9 @@ def usart0_tab_start(self, btn):
     create_switch_ui("Multi-processor Communication Mode", swt_USART0_MCPM, grid)
     create_textinput_ui("Insert your Microcontroller Clock Frequency (in MHz)", txtinp_freq, grid)
     create_textinput_ui("Insert desired Baud Rate ( in bps)", txtinp_baudrate, grid)
+    grid.add_widget(error)
+    grid.add_widget(br_limit_label)
+
     # create_label_ui("Error (%)", )
     # Put Content in Tab and make it available
 

@@ -1,12 +1,5 @@
-from register import *
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.button import Button
-from kivy.uix.switch import Switch
-from kivy.uix.label import Label
-from kivy.uix.spinner import Spinner
-from kivy.uix.tabbedpanel import TabbedPanelItem, TabbedPanel
 from functions import *
-from Modules.timer_counter_2.timer2_dropdowns import *
+from microcontrollers.Atmega168p.Modules.timer_counter_2.timer2_dropdowns import *
 
 # Variables
 

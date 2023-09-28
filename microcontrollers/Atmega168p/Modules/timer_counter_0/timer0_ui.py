@@ -94,7 +94,7 @@ swt_TIMER0_OVF = Switch()
 
 
 def timer0_tab_start(self, btn):
-    from Modules.timer_counter_0.timer0_codegen import timer0_set_status
+    from microcontrollers.Atmega168p.Modules.timer_counter_0.timer0_codegen import timer0_set_status
     timer0_tab = TabbedPanelItem(text="TIMER0")  # Create Tabbed Panel
     grid = GridLayout(cols=2)  # Store the content in a grid layout
 
