@@ -2,7 +2,8 @@
 
 WindowManager:
     MainWindow:
-    TabWindow:
+    Atmega168pTabWindow:
+    Atmega328pTabWindow:
 
 <Label1@Label>:
     # font_name: "Arial"
@@ -57,12 +58,45 @@ WindowManager:
 <Atmega168pTab>
     do_default_tab: False
 
-<TabWindow@TabbedPanel>:
-    name: "test"
-    id: "test_tp"
+<Atmega328pTab>
+    do_default_tab: False
+
+<Atmega168pTabWindow>:
+    name: "168p"
+    id: "168p_tp"
     BoxLayout:
         orientation: "vertical"
         Atmega168pTab:
+        GridLayout:
+            cols: 3
+            size_hint: 1, 0.05
+            Button:
+                text: "Back"
+                font_size: 14
+                size_hint: None, 1
+                width: "60dp"
+                pos_hint: {"x": 0, "y": 0}
+                on_release:
+                    app.root.current = "main"
+                    root.manager.transition.direction = "right"
+
+            Label:
+
+            Button:
+                text: "Generate File"
+                font_size: 14
+                size_hint: None, 1
+                width: "150dp"
+                pos_hint: {"right": 0, "y": 0}
+                on_release:
+                    root.get_data()
+
+<Atmega328pTabWindow>:
+    name: "328p"
+    id: "328_tp"
+    BoxLayout:
+        orientation: "vertical"
+        Atmega328pTab:
         GridLayout:
             cols: 3
             size_hint: 1, 0.05
@@ -107,6 +141,12 @@ WindowManager:
             TextInput:
                 id: path_to_directory
                 multiline: False
+        Spinner:
+            id: micro_sel
+            text: 'Atmega168p'
+            values: 'Atmega168p','Atmega328p'
+            on_text:
+                print("The spinner {} has text {}".format(self, self.text))
         Button:
             text: "OK"
             font_size: 24

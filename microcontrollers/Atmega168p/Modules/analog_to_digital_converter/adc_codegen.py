@@ -71,7 +71,7 @@ def adc_ats_convert(value):
     change_target_bit(binary[2], adcsrb, '0')
 
 
-def switch_convert():
+def adc_switch_convert():
     admux.set('5') if swt_ADC_ADLAR.active else admux.clear('5')
     adcsra.set('7') if swt_ADC_ADEN.active else adcsra.clear('7')
     adcsra.set('5') if swt_ADC_ADATE.active else adcsra.clear('5')
@@ -89,7 +89,7 @@ def get_adc():
     adc_ics_convert(get_value(ADC_ICS, spn_ADC_ICS.text))
     adc_presc_convert(get_value(ADC_PRESCALER, spn_ADC_PRESCALER.text))
     adc_ats_convert(get_value(ADC_ATS, spn_ADC_ATS.text))
-    switch_convert()
+    adc_switch_convert()
 
     print(admux.print_code())
     print(adcsra.print_code())

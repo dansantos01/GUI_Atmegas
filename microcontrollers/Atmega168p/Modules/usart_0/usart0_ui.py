@@ -60,7 +60,7 @@ txtinp_baudrate.disabled = True
 
 error = Label(text="Error(%): 0.0")
 br_limit_label = Label(text="Min Baud Rate: 0\n"
-                   "Max Baud Rate: 0")
+                            "Max Baud Rate: 0")
 
 # Dynamic Changes
 
@@ -100,6 +100,7 @@ def mode_disables(obj, text):
             br_limit = calc_minmax_baudrate(freq, 2, 1, 4096)
 
         br_limit_label.text = "Min Baud Rate: " + str(int(br_limit[0])) + "\nMax Baud Rate: " + str(int(br_limit[1]))
+
 
 def check_parameters_freq(obj, value):
     if not txtinp_freq.text.isdigit():
