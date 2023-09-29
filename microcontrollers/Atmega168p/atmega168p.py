@@ -9,7 +9,7 @@ from functions import *
 
 class Atmega168pTabWindow(Screen):
 
-    def get_data(self):
+    def get_168p_data(self):
         from main import path
         from main import filename
         with open(path + filename, "w") as f:
