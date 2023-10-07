@@ -1,6 +1,6 @@
 from microcontrollers.Atmega168p.Modules.timer_counter_0.timer0_codegen import *
-from microcontrollers.Atmega168p.Modules.timer_counter_1.timer1_module import *
-from microcontrollers.Atmega168p.Modules.timer_counter_2.timer2_module import *
+from microcontrollers.Atmega168p.Modules.timer_counter_1.timer1_codegen import *
+from microcontrollers.Atmega168p.Modules.timer_counter_2.timer2_codegen import *
 from microcontrollers.Atmega168p.Modules.analog_to_digital_converter.adc_codegen import *
 from microcontrollers.Atmega168p.Modules.usart_0.usart0_codegen import *
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -30,10 +30,10 @@ class Atmega168pTabWindow(Screen):
                 print("Timer 2 is closed")
             if timer1_is_open():
                 get_timer1()
-                f.write(tccr2a.print_code())
-                f.write(tccr2b.print_code())
-                f.write(timsk2.print_code())
-                f.write(assr.print_code())
+                f.write(tccr1a.print_code())
+                f.write(tccr1b.print_code())
+                f.write(timsk1.print_code())
+                f.write(tifr1.print_code())
             else:
                 print("Timer 1 is closed")
             if adc_is_open():
@@ -76,10 +76,10 @@ class Atmega168pTab(TabbedPanel):
         self.mg.add_widget(btn3)
         self.mg.add_widget(Label(text="Analog-to-Digital Converter"))
         btn4 = Button(text="ADC")
-        btn4.bind(on_release=lambda x: adc_tab_start(self, btn3))
+        btn4.bind(on_release=lambda x: adc_tab_start(self, btn4))
         self.mg.add_widget(btn4)
         self.mg.add_widget(Label(text="USART"))
         btn5 = Button(text="USART")
-        btn5.bind(on_release=lambda x: usart0_tab_start(self, btn3))
+        btn5.bind(on_release=lambda x: usart0_tab_start(self, btn5))
         self.mg.add_widget(btn5)
         self.main_t.content = self.mg
