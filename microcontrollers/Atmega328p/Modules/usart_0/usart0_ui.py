@@ -65,6 +65,7 @@ br_limit_label = Label(text="Min Baud Rate: 0\n"
 # Dynamic Changes
 
 spn_USART0_CLKPOL.disabled = True
+
 br_limit = [0, 0]
 
 
@@ -111,6 +112,7 @@ def check_parameters_freq(obj, value):
         freq = float(txtinp_freq.text) * 1000000
         txtinp_baudrate.disabled = False
 
+
         # For Asynchronous Normal mode
 
         if swt_USART0_U2X.active:
@@ -130,7 +132,6 @@ def check_parameters_freq(obj, value):
 
 
 def check_parameters_baudrate(obj, value):
-    global br_limit
     text = txtinp_baudrate.text
     ubrr = 0
     if not text.isdigit():
@@ -170,7 +171,7 @@ swt_USART0_U2X.bind(active=check_parameters_freq)
 
 
 def usart0_tab_start(self, btn):
-    from microcontrollers.Atmega168p.Modules.usart_0.usart0_codegen import usart0_set_status
+    from microcontrollers.Atmega328p.Modules.usart_0.usart0_codegen import usart0_set_status
     usart0_tab = TabbedPanelItem(text="USART0")  # Create Tabbed Panel
     grid = GridLayout(cols=2)  # Store the content in a grid layout
 
