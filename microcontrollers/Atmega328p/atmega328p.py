@@ -9,7 +9,7 @@ from microcontrollers.Atmega328p.Modules.usart_0.usart0_codegen import *
 
 class Atmega328pTabWindow(Screen):
 
-    def get_328p_data(self):
+    def get_atmega328p_data(self):
         from main import path
         from main import filename
         with open(path + filename, "w") as f:
@@ -36,6 +36,23 @@ class Atmega328pTabWindow(Screen):
                 f.write(tifr1.print_code())
             else:
                 print("Timer 1 is closed")
+            if adc_is_open():
+                get_adc()
+                f.write(admux.print_code())
+                f.write(adcsra.print_code())
+                f.write(adcsrb.print_code())
+                f.write(didr0.print_code())
+            else:
+                print("ADC is closed")
+            if usart0_is_open():
+                get_usart0()
+                f.write(ucsr0a.print_code())
+                f.write(ucsr0b.print_code())
+                f.write(ucsr0c.print_code())
+                f.write(ubrr0h.print_code())
+                f.write(ubrr0l.print_code())
+            else:
+                print("USART is closed")
 
 
 class Atmega328pTab(TabbedPanel):

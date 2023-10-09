@@ -9,7 +9,7 @@ from functions import *
 
 class Atmega168pTabWindow(Screen):
 
-    def get_168p_data(self):
+    def get_atmega168p_data(self):
         from main import path
         from main import filename
         with open(path + filename, "w") as f:
@@ -51,6 +51,8 @@ class Atmega168pTabWindow(Screen):
                 f.write(ucsr0c.print_code())
                 f.write(ubrr0h.print_code())
                 f.write(ubrr0l.print_code())
+            else:
+                print("USART is closed")
 
 
 class Atmega168pTab(TabbedPanel):
