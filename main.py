@@ -46,28 +46,6 @@ class FileCreationPopup(Popup):
             App.get_running_app().root.transition.direction = "left"
 
 
-class FileEditPopup(Popup):
-
-    # GET FILE DIRECTORY FOR EDITING
-
-    def on_release_button(self, path_input):
-
-        global filename
-        global path
-
-        if path_input.endswith("/"):
-            path = path_input
-        f = open(path + filename, "w")
-        f.write("NEW FILE")
-        f.close()
-        print("FILE CREATED")
-        print(filename)
-
-    def set_screen(self):
-        App.get_running_app().root.current = "test"
-        App.get_running_app().root.transition.direction = "left"
-
-
 kv = Builder.load_file('main_menu.kv')
 
 
