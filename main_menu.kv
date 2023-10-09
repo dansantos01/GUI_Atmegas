@@ -146,29 +146,3 @@ WindowManager:
                 root.on_release_button(path_to_directory.text)
                 root.dismiss()
                 root.set_screen()
-
-<FileEditPopup>:
-    auto_dismiss: True
-    title: "CONFIG FILE CREATION"
-
-    size_hint: 0.4, 0.5
-    pos_hint: {"right": 0.7, "top": 0.8}
-
-    BoxLayout:
-        orientation: "vertical"
-        spacing: "5dp"
-        GridLayout:
-            cols: 2
-            Label:
-                text: "Path to directory: "
-            TextInput:
-                id: path
-                multiline: False
-        Button:
-            text: "OK"
-            font_size: 24
-            size_hint: 1, 0.5
-            on_release:
-                root.on_release_button(path.text)
-                root.dismiss()
-                root.set_screen()
