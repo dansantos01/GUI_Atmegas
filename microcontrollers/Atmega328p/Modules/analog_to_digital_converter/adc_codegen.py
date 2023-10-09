@@ -1,4 +1,4 @@
-from microcontrollers.Atmega168p.Modules.analog_to_digital_converter.adc_ui import *
+from microcontrollers.Atmega328p.Modules.analog_to_digital_converter.adc_ui import *
 
 
 # Registers
